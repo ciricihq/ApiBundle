@@ -1,0 +1,21 @@
+# FOSUser {{
+fos_user_resetting_reset:
+    defaults: { _controller: CiriciApiBundle:User:reset }
+    path: /api/resetting/reset/{token}
+    methods: [GET, POST]
+
+fos_user_resetting_request:
+    defaults: { _controller: CiriciApiBundle:User:request }
+    path: /api/resetting/request
+    methods: [POST]
+
+fos_user_resetting_send_email:
+    defaults: { _controller: CiriciApiBundle:User:sendEmail }
+    path: /api/resetting/send-email
+    methods: [GET, POST]
+
+fos_user_resetting_check_email:
+    defaults: { _controller: CiriciApiBundle:User:checkEmail }
+    path: /api/resetting/check-email
+    methods: [GET, POST]
+# }}

@@ -1,0 +1,16 @@
+Cirici\ApiBundle\Entity\RefreshToken:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        client:
+            targetEntity: Cirici\ApiBundle\Entity\Client
+        user:
+            targetEntity: Cirici\ApiBundle\Entity\User
+
+    lifecycleCallbacks: {  }

@@ -1,0 +1,18 @@
+Cirici\ApiBundle\Entity\User:
+    type: entity
+    table: api_user
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        company:
+            targetEntity: Cirici\DavantisApiBundle\Entity\Company
+            inversedBy: users
+            joinColumn:
+                name: company_id
+                referencedColumnName: id
+
+    lifecycleCallbacks: {  }

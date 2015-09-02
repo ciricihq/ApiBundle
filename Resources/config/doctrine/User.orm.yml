@@ -7,12 +7,5 @@ Cirici\ApiBundle\Entity\User:
             id: true
             generator:
                 strategy: AUTO
-    manyToOne:
-        company:
-            targetEntity: Cirici\DavantisApiBundle\Entity\Company
-            inversedBy: users
-            joinColumn:
-                name: company_id
-                referencedColumnName: id
 
     lifecycleCallbacks: {  }

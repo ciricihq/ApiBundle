@@ -33,7 +33,7 @@ class SecurityController extends Controller
         $lastUsername = (null === $session) ? '' : $session->get(SecurityContext::LAST_USERNAME);
 
         return $this->render(
-            'CiriciDavantisApiBundle:Security:login.html.twig',
+            'CiriciApiBundle:Security:login.html.twig',
             array(
                 'last_username' => $lastUsername,
                 'error' => $error,

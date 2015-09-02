@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\UserBundle\Controller\ResettingController;
 
-use Cirici\DavantisApiBundle\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use FOS\UserBundle\FOSUserEvents;
@@ -34,7 +33,7 @@ class UserController extends ResettingController
         $username = $request->request->get('username');
 
         /** @var $user UserInterface */
-        $user = $this->get('fos_user.user_manager')
+        $user = $this->container->get('fos_user.user_manager')
             ->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
@@ -52,13 +51,13 @@ class UserController extends ResettingController
 
         if (null === $user->getConfirmationToken()) {
             /** @var $tokenGenerator \FOS\UserBundle\Util\TokenGeneratorInterface */
-            $tokenGenerator = $this->get('fos_user.util.token_generator');
+            $tokenGenerator = $this->container->get('fos_user.util.token_generator');
             $user->setConfirmationToken($tokenGenerator->generateToken());
         }
 
-        $this->get('fos_user.mailer')->sendResettingEmailMessage($user);
+        $this->container->get('fos_user.mailer')->sendResettingEmailMessage($user);
         $user->setPasswordRequestedAt(new \DateTime());
-        $this->get('fos_user.user_manager')->updateUser($user);
+        $this->container->get('fos_user.user_manager')->updateUser($user);
 
         return new JsonResponse(array(
             'message' => 'email.sent',
@@ -85,11 +84,11 @@ class UserController extends ResettingController
     public function resetAction(Request $request, $token)
     {
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
-        $formFactory = $this->get('fos_user.resetting.form.factory');
+        $formFactory = $this->container->get('fos_user.resetting.form.factory');
         /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
-        $userManager = $this->get('fos_user.user_manager');
+        $userManager = $this->container->get('fos_user.user_manager');
         /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
-        $dispatcher = $this->get('event_dispatcher');
+        $dispatcher = $this->container->get('event_dispatcher');
 
         $user = $userManager->findUserByConfirmationToken($token);
 

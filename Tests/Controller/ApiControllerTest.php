@@ -10,6 +10,7 @@ class ApiControllerTest extends BaseApiTestCase
         $client = static::createClient();
 
         $token_values = $this->getAccessToken($client, $this->api_client);
+
         // We should get access token
         $this->assertRegExp('/access_token/', json_encode($token_values), "Access token is not generated propertly");
 

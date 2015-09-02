@@ -30,33 +30,4 @@ class User extends BaseUser
         return $this->id;
     }
 
-    /* TO MOVE TO DavantisApiBundle */
-    /**
-     * @var \Cirici\DavantisApiBundle\Entity\Company
-     */
-    private $company;
-
-
-    /**
-     * Set company
-     *
-     * @param \Cirici\DavantisApiBundle\Entity\Company $company
-     * @return User
-     */
-    public function setCompany(\Cirici\DavantisApiBundle\Entity\Company $company = null)
-    {
-        $this->company = $company;
-
-        return $this;
-    }
-
-    /**
-     * Get company
-     *
-     * @return \Cirici\DavantisApiBundle\Entity\Company
-     */
-    public function getCompany()
-    {
-        return $this->company;
-    }
 }

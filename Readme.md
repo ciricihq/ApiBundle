@@ -9,6 +9,74 @@ The bundle used to handle oauth2 authentication is [FOSOAuthServerBundle](https:
 A good starting point to understand the authentication proces is to check this tutorial: [OAuth2 explained](http://blog.tankist.de/blog/2013/07/16/oauth2-explained-part-1-principles-and-terminology/)
 
 
+Installation
+------------
+
+In order to use this bundle you have to add the next lines to config.yml
+
+```yaml
+# FOSUser configs
+fos_user:
+    db_driver: orm
+    firewall_name: api
+    user_class: Cirici\ApiBundle\Entity\User
+    from_email:
+        address:              webmaster@api.davantis.cirici.com
+        sender_name:          webmaster
+    resetting:
+        token_ttl:            21600 # 6 hours i guess
+        email:
+            template:             'FOSUserBundle:Resetting:email.txt.twig'
+            from_email:
+                address:              webmaster@api.davantis.cirici.com
+                sender_name:          webmaster
+
+# FOSRest configs
+fos_rest:
+    param_fetcher_listener: true
+    view:
+        view_response_listener: force
+    routing_loader:
+        default_format: json
+    serializer:
+        serialize_null: true
+
+# FOSOAuth configs
+fos_oauth_server:
+    db_driver: orm
+    client_class: Cirici\ApiBundle\Entity\Client
+    access_token_class: Cirici\ApiBundle\Entity\AccessToken
+    refresh_token_class: Cirici\ApiBundle\Entity\RefreshToken
+    auth_code_class: Cirici\ApiBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_manager
+        options:
+            supported_scopes: user
+```
+
+You should add the next lines to ``routing.yml`` as well:
+
+```yml
+cirici_api:
+    resource: "@CiriciApiBundle/Resources/config/routing.yml"
+    prefix:   /
+
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+fos_oauth_server_authorize:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
+
+cirici_oauth_server_auth_login:
+    pattern: /oauth/v2/auth_login
+    defaults: { _controller: CiriciApiBundle:Security:login }
+
+cirici_oauth_server_auth_login_check:
+    pattern: /oauth/v2/auth_login_check
+    defaults: { _controller: FOSUserBundle:Security:check }
+
+```
+
 Create oauth2 clients
 ---------------------
 

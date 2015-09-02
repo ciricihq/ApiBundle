@@ -13,7 +13,7 @@
     "require": {
         "php": ">=5.3.3",
         "jms/serializer-bundle": "0.13.*",
-        "friendsofsymfony/user-bundle": "~2.0@dev",
+        "friendsofsymfony/user-bundle": "*",
         "friendsofsymfony/oauth-server-bundle": "~1.4",
         "friendsofsymfony/rest-bundle": "~1.5",
         "nelmio/cors-bundle": "^1.4",

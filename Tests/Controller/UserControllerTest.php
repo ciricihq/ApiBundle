@@ -23,10 +23,10 @@ class UserControllerTest extends BaseApiTestCase
         $message = $collectedMessages[0];
 
         $this->assertInstanceOf('Swift_Message', $message);
-        $this->assertEquals('resetting.email.subject', $message->getSubject());
+        $this->assertRegExp('/resetting.email.subject|Reset Password/', $message->getSubject());
         // $this->assertEquals('send@example.com', key($message->getFrom()));
         $this->assertEquals('testuser@test.com', key($message->getTo()));
-        $this->assertRegExp('/resetting.email.message/', $message->getBody());
+        $this->assertRegExp('/resetting.email.message|To reset your password/', $message->getBody());
 
         // preg_match('@api/resetting/reset/(.[^\s]+)@', $message->getBody(), $change_password_url);
         // $resetting_url = $change_password_url[1];

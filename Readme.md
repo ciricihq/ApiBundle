@@ -52,6 +52,14 @@ fos_oauth_server:
         user_provider: fos_user.user_manager
         options:
             supported_scopes: user
+
+# In order to override the User entity you have to add the next lines
+# this changes the pointer of all the relationships to user bundle
+doctrine:
+    orm:
+        resolve_target_entities:
+            Cirici\ApiBundle\Model\UserInterface: Cirici\YourBrandNewBundle\Entity\SomeUserEntity
+
 ```
 
 You should add the next lines to ``routing.yml`` as well:

@@ -7,7 +7,6 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Cirici\ApiBundle\Entity\User;
 
 class LoadUserData extends AbstractFixture implements ContainerAwareInterface, OrderedFixtureInterface
 {

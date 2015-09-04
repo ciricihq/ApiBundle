@@ -13,6 +13,6 @@ Cirici\ApiBundle\Entity\AccessToken:
             joinColumn:
                 nullable: false
         user:
-            targetEntity: Cirici\ApiBundle\Entity\User
+            targetEntity: Cirici\ApiBundle\Model\UserInterface
 
     lifecycleCallbacks: {  }

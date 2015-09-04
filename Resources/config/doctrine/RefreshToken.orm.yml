@@ -11,6 +11,6 @@ Cirici\ApiBundle\Entity\RefreshToken:
         client:
             targetEntity: Cirici\ApiBundle\Entity\Client
         user:
-            targetEntity: Cirici\ApiBundle\Entity\User
+            targetEntity: Cirici\ApiBundle\Model\UserInterface
 
     lifecycleCallbacks: {  }

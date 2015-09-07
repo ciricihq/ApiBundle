@@ -76,6 +76,5 @@ class ApiControllerTest extends BaseApiTestCase
         // We should get access token
         $this->assertRegExp('/access_token/', $client->getResponse()->getContent(), "Access token is not generated propertly");
         $this->assertRegExp('/refresh_token/', $client->getResponse()->getContent(), "Access token is not generated propertly");
-
     }
 }

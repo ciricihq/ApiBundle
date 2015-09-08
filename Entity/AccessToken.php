@@ -74,7 +74,7 @@ class AccessToken extends BaseAccessToken
     /**
      * Get user
      *
-     * @return \Cirici\ApiBundle\Entity\User
+     * @return \Cirici\ApiBundle\Model\UserInterface
      */
     public function getUser()
     {

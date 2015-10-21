@@ -85,6 +85,14 @@ cirici_oauth_server_auth_login_check:
 
 ```
 
+Enabling user call in routing.yml:
+
+```yml
+cirici_oauth_server_user:
+    pattern: /api/user
+    defaults: { _controller: CiriciApiBundle:Api:user }
+```
+
 Create oauth2 clients
 ---------------------
 

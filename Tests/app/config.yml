@@ -6,7 +6,7 @@ framework:
 fos_user:
     db_driver: orm
     firewall_name: api
-    user_class: Cirici\DavantisApiBundle\Entity\User
+    user_class: Cirici\ApiBundle\Tests\Entity\User
     service:
         mailer: fos_user.mailer.noop
     from_email:
@@ -17,7 +17,7 @@ fos_user:
         email:
             template:             'FOSUserBundle:Resetting:email.txt.twig'
             from_email:
-                address:              webmaster@api.davantis.cirici.com
+                address:              webmaster@api.cirici.com
                 sender_name:          webmaster
 
 security:
@@ -38,11 +38,6 @@ security:
     # the main part of the security, where you can set up firewalls
     # for specific sections of your app
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
         # secures part of the application
         api:
             pattern:    ^/api/
@@ -97,6 +92,8 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
+        resolve_target_entities:
+            Cirici\ApiBundle\Model\UserInterface: Cirici\ApiBundle\Tests\Entity\User
 
 liip_functional_test:
     cache_sqlite_db: true

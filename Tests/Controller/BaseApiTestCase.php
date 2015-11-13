@@ -7,6 +7,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Cirici\ApiBundle\Command\ExpireTokenCommand;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
 class BaseApiTestCase extends WebTestCase
 {
@@ -16,6 +17,20 @@ class BaseApiTestCase extends WebTestCase
 
     public function setUp()
     {
+        $namespace = "Cirici\ApiBundle\Tests\Entity";
+        $emanager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $configuration  = $emanager->getConfiguration();
+        $annotationDriver = new AnnotationDriver(
+            $this->getContainer()->get('annotation_reader'),
+            [__DIR__ . '/../Entity']
+        );
+
+        /** @var MappingDriverChain $driver */
+        $driver = $configuration->getMetadataDriverImpl();
+        $driver->addDriver($annotationDriver, $namespace);
+
+        $configuration->addEntityNamespace('CiriciApiBundle', $namespace);
+
         $this->loadFixtures(
             array(
                 '\Cirici\ApiBundle\DataFixtures\ORM\LoadUserData',

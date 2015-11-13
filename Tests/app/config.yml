@@ -1,6 +1,7 @@
 framework:
+    test: ~
     secret: "Three can keep a secret, if two of them are dead."
-    router: { resource: %kernel.root_dir%/../../Resources/config/routing.yml }
+    router: { resource: %kernel.root_dir%/routing.yml }
 
 # FOSUser configs
 fos_user:

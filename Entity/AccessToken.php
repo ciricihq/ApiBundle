@@ -7,21 +7,32 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * AccessToken
+ *
+ * @ORM\Entity
  */
 class AccessToken extends BaseAccessToken
 {
     /**
      * @var integer
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var \Cirici\ApiBundle\Entity\Client
+     *
+     * @ORM\ManyToOne(targetEntity="Cirici\ApiBundle\Entity\Client")
+     * @ORM\JoinColumn(nullable=false)
      */
     protected $client;
 
     /**
      * @var \Cirici\ApiBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="Cirici\ApiBundle\Model\UserInterface")
      */
     protected $user;
 

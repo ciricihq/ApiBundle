@@ -15,9 +15,8 @@ class BaseApiTestCase extends WebTestCase
     public $public_id;
     public $secret;
 
-    public function setUp()
+    private function addMappings($namespace)
     {
-        $namespace = "Cirici\ApiBundle\Tests\Entity";
         $emanager = $this->getContainer()->get('doctrine.orm.entity_manager');
         $configuration  = $emanager->getConfiguration();
         $annotationDriver = new AnnotationDriver(
@@ -28,8 +27,12 @@ class BaseApiTestCase extends WebTestCase
         /** @var MappingDriverChain $driver */
         $driver = $configuration->getMetadataDriverImpl();
         $driver->addDriver($annotationDriver, $namespace);
-
         $configuration->addEntityNamespace('CiriciApiBundle', $namespace);
+    }
+
+    public function setUp()
+    {
+        $this->addMappings("Cirici\ApiBundle\Tests\Entity");
 
         $this->loadFixtures(
             array(

@@ -14,8 +14,8 @@ class ExpireTokenCommand extends ContainerAwareCommand
         $this
             ->setName('cirici:oauth-server:token:expire')
             ->setDescription('Force expire of token')
-            ->addArgument( 'token_id' )
-            ->addArgument( 'token' )
+            ->addOption( 'token_id' )
+            ->addOption( 'token' )
             ->setHelp(
                 <<<EOT
                     The <info>%command.name%</info>command forces token to expire.
@@ -31,12 +31,12 @@ EOT
         $token = null;
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        if ($input->getArgument('token_id')) {
-            $token = $em->getRepository('CiriciApiBundle:AccessToken')->findOneById($input->getArgument('token_id'));
+        if ($input->getOption('token_id')) {
+            $token = $em->getRepository('CiriciApiBundle:AccessToken')->findOneById($input->getOption('token_id'));
         }
 
-        if ($input->getArgument('token')) {
-            $token = $em->getRepository('CiriciApiBundle:AccessToken')->findOneByToken($input->getArgument('token'));
+        if ($input->getOption('token')) {
+            $token = $em->getRepository('CiriciApiBundle:AccessToken')->findOneByToken($input->getOption('token'));
         }
 
         if ($token) {

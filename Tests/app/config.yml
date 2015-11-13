@@ -1,0 +1,102 @@
+framework:
+    secret: "Three can keep a secret, if two of them are dead."
+    router: { resource: %kernel.root_dir%/../../Resources/config/routing.yml }
+
+# FOSUser configs
+fos_user:
+    db_driver: orm
+    firewall_name: api
+    user_class: Cirici\DavantisApiBundle\Entity\User
+    service:
+        mailer: fos_user.mailer.noop
+    from_email:
+        address:              webmaster@api.davantis.cirici.com
+        sender_name:          webmaster
+    resetting:
+        token_ttl:            21600 # 6 hours i guess
+        email:
+            template:             'FOSUserBundle:Resetting:email.txt.twig'
+            from_email:
+                address:              webmaster@api.davantis.cirici.com
+                sender_name:          webmaster
+
+security:
+    # http://symfony.com/doc/current/book/security.html#encoding-the-user-s-password
+    encoders:
+        FOS\UserBundle\Model\UserInterface: sha512
+
+    # http://symfony.com/doc/current/book/security.html#hierarchical-roles
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username
+
+    # the main part of the security, where you can set up firewalls
+    # for specific sections of your app
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        # secures part of the application
+        api:
+            pattern:    ^/api/
+            fos_oauth: true
+            stateless: true
+            anonymous: true
+
+        # Oauth firewalls
+        oauth_token:
+            pattern: ^/oauth/v2/token
+            security: false
+
+        oauth_authorize:
+            pattern: ^/oauth/v2/auth
+            form_login:
+                provider: fos_userbundle
+                check_path: /oauth/v2/auth_login_check
+                login_path: /oauth/v2/auth_login
+            anonymous: true
+
+    # with these settings you can restrict or allow access for different parts
+    # of your application based on roles, ip, host or methods
+    # http://symfony.com/doc/current/cookbook/security/access_control.html
+    access_control:
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
+fos_oauth_server:
+    db_driver: orm
+    client_class: Cirici\ApiBundle\Entity\Client
+    access_token_class: Cirici\ApiBundle\Entity\AccessToken
+    refresh_token_class: Cirici\ApiBundle\Entity\RefreshToken
+    auth_code_class: Cirici\ApiBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_manager
+        options:
+            supported_scopes: user
+
+doctrine:
+    dbal:
+        driver: pdo_sqlite
+        path: %kernel.root_dir%/data/test.db3
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+
+liip_functional_test:
+    cache_sqlite_db: true

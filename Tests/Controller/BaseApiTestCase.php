@@ -33,6 +33,8 @@ class BaseApiTestCase extends WebTestCase
     public function setUp()
     {
         $this->addMappings("Cirici\ApiBundle\Tests\Entity");
+        $this->addMappings("Cirici\ApiBundle\Entity");
+        $this->loadFixtures(array());
 
         $this->loadFixtures(
             array(
@@ -95,7 +97,8 @@ class BaseApiTestCase extends WebTestCase
         $url = "/oauth/v2/token";
         // We can do this with post or get but in real app we'll do with post
         // or header, so let's try it!!
-        $crawler = $client->request('POST', $url, array(
+
+        $client->request('POST', $url, array(
             'client_id' => $api_client->getPublicId(),
             'client_secret' => $api_client->getSecret(),
             'grant_type' => 'password',

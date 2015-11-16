@@ -14,8 +14,18 @@ class ExpireTokenCommand extends ContainerAwareCommand
         $this
             ->setName('cirici:oauth-server:token:expire')
             ->setDescription('Force expire of token')
-            ->addOption( 'token_id' )
-            ->addOption( 'token' )
+            ->addOption(
+                'token_id',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The token internal id'
+            )
+            ->addOption(
+                'token',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The token to expire'
+            )
             ->setHelp(
                 <<<EOT
                     The <info>%command.name%</info>command forces token to expire.

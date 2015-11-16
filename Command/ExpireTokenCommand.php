@@ -40,19 +40,21 @@ EOT
     {
         $token = null;
 
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $manager = $this->getContainer()->get('fos_oauth_server.access_token_manager');
         if ($input->getOption('token_id')) {
-            $token = $em->getRepository('CiriciApiBundle:AccessToken')->findOneById($input->getOption('token_id'));
+            $token = $manager->findTokenBy(array('id' => $input->getOption('token_id')));
         }
 
         if ($input->getOption('token')) {
-            $token = $em->getRepository('CiriciApiBundle:AccessToken')->findOneByToken($input->getOption('token'));
+            $token = $manager->findTokenByToken($input->getOption('token'));
         }
 
         if ($token) {
             $token->setExpiresAt($token->getExpiresAt() - 4000);
             $em->persist($token);
             $em->flush($token);
+
+            $manager->updateToken($token);
 
             if ($token->hasExpired()) {
                 $output->writeln("The token has been expired");

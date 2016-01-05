@@ -51,10 +51,12 @@ EOT
 
         if ($token) {
             $token->setExpiresAt($token->getExpiresAt() - 4000);
-            $em->persist($token);
-            $em->flush($token);
+            $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
             $manager->updateToken($token);
+
+            $em->persist($token);
+            $em->flush($token);
 
             if ($token->hasExpired()) {
                 $output->writeln("The token has been expired");

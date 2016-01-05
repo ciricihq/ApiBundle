@@ -33,7 +33,7 @@ class ApiControllerTest extends BaseApiTestCase
         $authorizeform = $crawler->selectButton('accepted')->form();
         $crawler = $client->submit($authorizeform);
         // We should get 302 status code because we are redirecting to the requested redirect_uri
-        $this->assertEquals(302, $client->getResponse()->getStatusCode(), "The status code received is not 200");
+        $this->assertEquals(302, $client->getResponse()->getStatusCode(), "The status code received is not 302");
     }
 
     public function testRefreshToken()

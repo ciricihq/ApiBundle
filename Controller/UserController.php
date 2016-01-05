@@ -28,9 +28,9 @@ class UserController extends ResettingController
      *   description="Request reset user password: submit form and send email",
      * )
      */
-    public function sendEmailAction(Request $request)
+    public function sendEmailAction()
     {
-        $username = $request->request->get('username');
+        $username = $this->container->get('request')->request->get('username');
 
         /** @var $user UserInterface */
         $user = $this->container->get('fos_user.user_manager')
@@ -67,7 +67,7 @@ class UserController extends ResettingController
     /**
      * Tell the user to check his email provider
      */
-    public function checkEmailAction(Request $request)
+    public function checkEmailAction()
     {
         $email = $request->query->get('email');
 
@@ -81,7 +81,7 @@ class UserController extends ResettingController
         ));
     }
 
-    public function resetAction(Request $request, $token)
+    public function resetAction($token)
     {
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
         $formFactory = $this->container->get('fos_user.resetting.form.factory');

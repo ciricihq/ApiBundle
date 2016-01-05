@@ -2,6 +2,10 @@ framework:
     test: ~
     secret: "Three can keep a secret, if two of them are dead."
     router: { resource: %kernel.root_dir%/routing.yml }
+    session:
+        storage_id: session.storage.filesystem
+    profiler:
+        collect: true
 
 # FOSUser configs
 fos_user:
@@ -98,3 +102,6 @@ doctrine:
 
 liip_functional_test:
     cache_sqlite_db: true
+
+swiftmailer:
+    disable_delivery: true

@@ -15,7 +15,10 @@ class UserControllerTest extends BaseApiTestCase
             'username' => 'testuser@test.com'
         ), array(), $headers);
 
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
         $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+
         // Check that an e-mail ws sent
         $this->assertEquals(1, $mailCollector->getMessageCount());
 

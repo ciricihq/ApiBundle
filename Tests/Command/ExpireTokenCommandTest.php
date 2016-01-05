@@ -10,12 +10,9 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
 class ExpireTokenCommandTest extends KernelTestCase
 {
-    protected static $kernel;
-
     public function setUp()
     {
-        $this->kernel = $this->createKernel();
-        $this->kernel->boot();
+        self::bootKernel();
 
         $this->addMappings("Cirici\ApiBundle\Tests\Entity");
         $this->addMappings("Cirici\ApiBundle\Entity");
@@ -23,7 +20,7 @@ class ExpireTokenCommandTest extends KernelTestCase
 
     public function testExecute()
     {
-        $application = new Application($this->kernel);
+        $application = new Application(static::$kernel);
         $application->add(new ExpireTokenCommand());
 
         $command = $application->find('cirici:oauth-server:token:expire');
@@ -38,10 +35,10 @@ class ExpireTokenCommandTest extends KernelTestCase
 
     public function addMappings($namespace)
     {
-        $emanager = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $emanager = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
         $configuration  = $emanager->getConfiguration();
         $annotationDriver = new AnnotationDriver(
-            $this->kernel->getContainer()->get('annotation_reader'),
+            static::$kernel->getContainer()->get('annotation_reader'),
             [__DIR__ . '/../Entity']
         );
 

@@ -129,5 +129,4 @@ class UserController extends ResettingController
             'form' => $form->createView(),
         ));
     }
-
 }

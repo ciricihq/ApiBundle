@@ -6,7 +6,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ApiController extends FOSRestController
+class ApiUserController extends FOSRestController
 {
     public function userAction()
     {

@@ -34,6 +34,19 @@ class ApiControllerTest extends BaseApiTestCase
         $crawler = $client->submit($authorizeform);
         // We should get 302 status code because we are redirecting to the requested redirect_uri
         $this->assertEquals(302, $client->getResponse()->getStatusCode(), "The status code received is not 302");
+
+        // Testing check credentials endpoint
+        $client->followRedirects(true);
+        $parameters = array(
+            '_username' => "testuser",
+            '_password' => "test"
+        );
+        $crawler = $client->request('POST', '/oauth/v2/auth_login_check', $parameters);
+        $this->assertNotEquals(500, $client->getResponse()->getStatusCode());
+        // We expect 404 code because correct login redirects a non-existing
+        // url. If the login would be bad it would redirect to 200 code page
+        // with a form to provide correct user and password
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
 
     public function testRefreshToken()

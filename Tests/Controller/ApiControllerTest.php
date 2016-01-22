@@ -26,7 +26,7 @@ class ApiControllerTest extends BaseApiTestCase
         $loginform['_password'] = "test";
         $client->followRedirects(true);
         $crawler = $client->submit($loginform);
-        $this->assertGreaterThan(0, $crawler->filter('form.fos_oauth_server_authorize')->count(), "The authorize form cannot be reached");
+        $this->assertGreaterThan(0, $crawler->filter('form[name=fos_oauth_server_authorize_form]')->count(), "The authorize form cannot be reached");
 
         // Authorize app
         $client->followRedirects(false);

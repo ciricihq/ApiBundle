@@ -101,7 +101,7 @@ will able to authenticate against our oauth server. A client could be one for th
 
 
 ```
-php app/console acme:oauth-server:client:create --redirect-uri="CLIENT_HOST" --grant-type="authorization_code" --grant-type="password" --grant-type="refresh_token" --grant-type="token" --grant-type="client_credentials"
+php app/console cirici:oauth-server:client:create --redirect-uri="CLIENT_HOST" --grant-type="authorization_code" --grant-type="password" --grant-type="refresh_token" --grant-type="token" --grant-type="client_credentials"
 ```
 
 You can define wich grant types will accept this Client, in the example we enable all of them. But the Password Grant type is what is planned to use with this project.
@@ -182,6 +182,7 @@ to:
 /api/resetting/send-email
 
 This call will send an email to specified user with the url to reset his password. This call will be a web form fit reset password form.
+
 
 Problems
 --------

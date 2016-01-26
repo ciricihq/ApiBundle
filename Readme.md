@@ -90,7 +90,7 @@ Enabling user call in routing.yml:
 ```yml
 cirici_oauth_server_user:
     pattern: /api/user
-    defaults: { _controller: CiriciApiBundle:Api:user }
+    defaults: { _controller: CiriciApiBundle:ApiUser:user }
 ```
 
 Create oauth2 clients

@@ -12,7 +12,7 @@ class ApiUserController extends FOSRestController
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
 
-        if ($user) {
+        if (is_object($user)) {
             return new JsonResponse(array(
                 'id' => $user->getId(),
                 'username' => $user->getUsername()

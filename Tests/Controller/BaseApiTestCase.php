@@ -65,15 +65,6 @@ class BaseApiTestCase extends WebTestCase
         return $client;
     }
 
-    public static function assertJson($client)
-    {
-        parent::assertTrue(
-            $client->getResponse()->headers->contains(
-                'Content-Type',
-                'application/json'
-            )
-        );
-    }
 
     public function invalidateToken($token)
     {

@@ -32,7 +32,7 @@ class RefreshToken extends BaseRefreshToken
     /**
      * @var \Cirici\ApiBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="Cirici\ApiBundle\Model\UserInterface")
+     * @ORM\ManyToOne(targetEntity="Cirici\ApiBundle\Model\UserInterface", cascade={"remove"})
      */
     protected $user;
 

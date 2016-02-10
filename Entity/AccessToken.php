@@ -32,7 +32,7 @@ class AccessToken extends BaseAccessToken
     /**
      * @var \Cirici\ApiBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="Cirici\ApiBundle\Model\UserInterface", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="Cirici\ApiBundle\Model\UserInterface")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $user;

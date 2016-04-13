@@ -81,7 +81,7 @@ class BaseApiTestCase extends WebTestCase
         ) );
     }
 
-    public function getAccessToken($client)
+    public function getAccessToken($client, $username = 'testuser', $password = 'test')
     {
         $api_client = $this->api_client;
         // Get the token
@@ -93,8 +93,8 @@ class BaseApiTestCase extends WebTestCase
             'client_id' => $api_client->getPublicId(),
             'client_secret' => $api_client->getSecret(),
             'grant_type' => 'password',
-            'username' => 'testuser',
-            'password' => 'test',
+            'username' => $username,
+            'password' => $password,
         ));
 
         $token_values = json_decode($client->getResponse()->getContent(), true);

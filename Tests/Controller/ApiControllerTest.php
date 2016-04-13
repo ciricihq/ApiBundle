@@ -9,7 +9,7 @@ class ApiControllerTest extends BaseApiTestCase
         // Create a new client to browse the application
         $client = static::createClient();
 
-        $token_values = $this->getAccessToken($client, $this->api_client);
+        $token_values = $this->getAccessToken($client);
 
         // We should get access token
         $this->assertRegExp('/access_token/', json_encode($token_values), "Access token is not generated propertly");
@@ -54,7 +54,7 @@ class ApiControllerTest extends BaseApiTestCase
         // Create a new client to browse the application
         $client = static::createClient();
 
-        $token_values = $this->getAccessToken($client, $this->api_client);
+        $token_values = $this->getAccessToken($client);
 
         // get the new values
         $url = "/oauth/v2/token";

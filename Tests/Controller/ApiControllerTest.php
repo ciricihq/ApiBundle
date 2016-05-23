@@ -9,7 +9,7 @@ class ApiControllerTest extends BaseApiTestCase
         // Create a new client to browse the application
         $client = static::createClient();
 
-        $token_values = $this->getAccessToken($client, $this->api_client);
+        $token_values = $this->getAccessToken($client);
 
         // We should get access token
         $this->assertRegExp('/access_token/', json_encode($token_values), "Access token is not generated propertly");
@@ -26,14 +26,27 @@ class ApiControllerTest extends BaseApiTestCase
         $loginform['_password'] = "test";
         $client->followRedirects(true);
         $crawler = $client->submit($loginform);
-        $this->assertGreaterThan(0, $crawler->filter('form.fos_oauth_server_authorize')->count(), "The authorize form cannot be reached");
+        $this->assertGreaterThan(0, $crawler->filter('form[name=fos_oauth_server_authorize_form]')->count(), "The authorize form cannot be reached");
 
         // Authorize app
         $client->followRedirects(false);
         $authorizeform = $crawler->selectButton('accepted')->form();
         $crawler = $client->submit($authorizeform);
         // We should get 302 status code because we are redirecting to the requested redirect_uri
-        $this->assertEquals(302, $client->getResponse()->getStatusCode(), "The status code received is not 200");
+        $this->assertEquals(302, $client->getResponse()->getStatusCode(), "The status code received is not 302");
+
+        // Testing check credentials endpoint
+        $client->followRedirects(true);
+        $parameters = array(
+            '_username' => "testuser",
+            '_password' => "test"
+        );
+        $crawler = $client->request('POST', '/oauth/v2/auth_login_check', $parameters);
+        $this->assertNotEquals(500, $client->getResponse()->getStatusCode());
+        // We expect 404 code because correct login redirects a non-existing
+        // url. If the login would be bad it would redirect to 200 code page
+        // with a form to provide correct user and password
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
 
     public function testRefreshToken()
@@ -41,7 +54,7 @@ class ApiControllerTest extends BaseApiTestCase
         // Create a new client to browse the application
         $client = static::createClient();
 
-        $token_values = $this->getAccessToken($client, $this->api_client);
+        $token_values = $this->getAccessToken($client);
 
         // get the new values
         $url = "/oauth/v2/token";
@@ -76,6 +89,5 @@ class ApiControllerTest extends BaseApiTestCase
         // We should get access token
         $this->assertRegExp('/access_token/', $client->getResponse()->getContent(), "Access token is not generated propertly");
         $this->assertRegExp('/refresh_token/', $client->getResponse()->getContent(), "Access token is not generated propertly");
-
     }
 }

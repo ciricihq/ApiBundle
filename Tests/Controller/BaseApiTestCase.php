@@ -7,6 +7,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Cirici\ApiBundle\Command\ExpireTokenCommand;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
 class BaseApiTestCase extends WebTestCase
 {
@@ -14,8 +15,27 @@ class BaseApiTestCase extends WebTestCase
     public $public_id;
     public $secret;
 
+    private function addMappings($namespace)
+    {
+        $emanager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $configuration  = $emanager->getConfiguration();
+        $annotationDriver = new AnnotationDriver(
+            $this->getContainer()->get('annotation_reader'),
+            [__DIR__ . '/../Entity']
+        );
+
+        /** @var MappingDriverChain $driver */
+        $driver = $configuration->getMetadataDriverImpl();
+        $driver->addDriver($annotationDriver, $namespace);
+        $configuration->addEntityNamespace('CiriciApiBundle', $namespace);
+    }
+
     public function setUp()
     {
+        $this->addMappings("Cirici\ApiBundle\Tests\Entity");
+        $this->addMappings("Cirici\ApiBundle\Entity");
+        $this->loadFixtures(array());
+
         $this->loadFixtures(
             array(
                 '\Cirici\ApiBundle\DataFixtures\ORM\LoadUserData',
@@ -45,15 +65,6 @@ class BaseApiTestCase extends WebTestCase
         return $client;
     }
 
-    public static function assertJson($client)
-    {
-        parent::assertTrue(
-            $client->getResponse()->headers->contains(
-                'Content-Type',
-                'application/json'
-            )
-        );
-    }
 
     public function invalidateToken($token)
     {
@@ -70,19 +81,20 @@ class BaseApiTestCase extends WebTestCase
         ) );
     }
 
-    public function getAccessToken($client)
+    public function getAccessToken($client, $username = 'testuser', $password = 'test')
     {
         $api_client = $this->api_client;
         // Get the token
         $url = "/oauth/v2/token";
         // We can do this with post or get but in real app we'll do with post
         // or header, so let's try it!!
-        $crawler = $client->request('POST', $url, array(
+
+        $client->request('POST', $url, array(
             'client_id' => $api_client->getPublicId(),
             'client_secret' => $api_client->getSecret(),
             'grant_type' => 'password',
-            'username' => 'testuser',
-            'password' => 'test',
+            'username' => $username,
+            'password' => $password,
         ));
 
         $token_values = json_decode($client->getResponse()->getContent(), true);

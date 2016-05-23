@@ -14,8 +14,18 @@ class ExpireTokenCommand extends ContainerAwareCommand
         $this
             ->setName('cirici:oauth-server:token:expire')
             ->setDescription('Force expire of token')
-            ->addArgument( 'token_id' )
-            ->addArgument( 'token' )
+            ->addOption(
+                'token_id',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The token internal id'
+            )
+            ->addOption(
+                'token',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The token to expire'
+            )
             ->setHelp(
                 <<<EOT
                     The <info>%command.name%</info>command forces token to expire.
@@ -30,17 +40,21 @@ EOT
     {
         $token = null;
 
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        if ($input->getArgument('token_id')) {
-            $token = $em->getRepository('CiriciApiBundle:AccessToken')->findOneById($input->getArgument('token_id'));
+        $manager = $this->getContainer()->get('fos_oauth_server.access_token_manager');
+        if ($input->getOption('token_id')) {
+            $token = $manager->findTokenBy(array('id' => $input->getOption('token_id')));
         }
 
-        if ($input->getArgument('token')) {
-            $token = $em->getRepository('CiriciApiBundle:AccessToken')->findOneByToken($input->getArgument('token'));
+        if ($input->getOption('token')) {
+            $token = $manager->findTokenByToken($input->getOption('token'));
         }
 
         if ($token) {
             $token->setExpiresAt($token->getExpiresAt() - 4000);
+            $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+            $manager->updateToken($token);
+
             $em->persist($token);
             $em->flush($token);
 

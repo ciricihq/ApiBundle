@@ -15,7 +15,10 @@ class UserControllerTest extends BaseApiTestCase
             'username' => 'testuser@test.com'
         ), array(), $headers);
 
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
         $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+
         // Check that an e-mail ws sent
         $this->assertEquals(1, $mailCollector->getMessageCount());
 
@@ -34,14 +37,14 @@ class UserControllerTest extends BaseApiTestCase
         $this->assertRegExp('/{"message":"email.sent"}/', $client->getResponse()->getContent(), "Password request not worked");
 
         // Check if the respense contents are json
-        $this->assertJson($client);
+        $this->assertJson($client->getResponse()->getContent());
 
         // Test again to check the message that you have already asked for password reset
         $crawler = $client->request('POST', '/api/resetting/send-email', array(
             'username' => 'testuser@test.com'
         ), array(), $headers);
         // Check if the respense contents are json
-        $this->assertJson($client);
+        $this->assertJson($client->getResponse()->getContent());
         $this->assertRegExp('/{"error":"password.already_requested"}/', $client->getResponse()->getContent(), "Password request not worked");
 
         /* $crawler = $client->request('GET', '/api/resetting/reset/'.$resetting_url);
@@ -55,6 +58,6 @@ class UserControllerTest extends BaseApiTestCase
             'username' => 'nonvaliduser@test.com'
         ), array(), $headers);
         // Check if the respense contents are json
-        $this->assertJson($client);
+        $this->assertJson($client->getResponse()->getContent());
     }
 }

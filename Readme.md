@@ -21,14 +21,14 @@ fos_user:
     firewall_name: api
     user_class: Cirici\ApiBundle\Entity\User
     from_email:
-        address:              webmaster@api.davantis.cirici.com
+        address:              webmaster@api.cirici.com
         sender_name:          webmaster
     resetting:
         token_ttl:            21600 # 6 hours i guess
         email:
             template:             'FOSUserBundle:Resetting:email.txt.twig'
             from_email:
-                address:              webmaster@api.davantis.cirici.com
+                address:              webmaster@api.cirici.com
                 sender_name:          webmaster
 
 # FOSRest configs

@@ -28,7 +28,7 @@ class UserController extends ResettingController
      *   description="Request reset user password: submit form and send email",
      * )
      */
-    public function sendEmailAction()
+    public function sendEmailAction(\Symfony\Component\HttpFoundation\Request $request)
     {
         $username = $this->container->get('request')->request->get('username');
 
@@ -67,11 +67,9 @@ class UserController extends ResettingController
     /**
      * Tell the user to check his email provider
      */
-    public function checkEmailAction()
+    public function checkEmailAction(\Symfony\Component\HttpFoundation\Request $request)
     {
-        $session = $this->container->get('session');
-        $email = $session->get(static::SESSION_EMAIL);
-        $session->remove(static::SESSION_EMAIL);
+        $email = $request->query->get('email');
 
         if (empty($email)) {
             // the user does not come from the sendEmail action

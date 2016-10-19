@@ -1,14 +1,18 @@
 {
-    "name": "cirici/api-bundle",
+    "name": "ciricihq/api-bundle",
     "license": "proprietary",
     "type": "symfony-bundle",
     "description": "Symfony API to manage Push Notifications",
     "keywords": ["push", "api"],
     "authors": [
-        {
-            "name": "Genar Trias Ortiz",
-            "email": "genar@cirici.com"
-        }
+      {
+        "name": "Cirici New Media",
+        "homepage": "http://cirici.com"
+      },
+      {
+        "name": "Genar Trias Ortiz",
+        "email": "genar@cirici.com"
+      }
     ],
     "require": {
         "php": ">=5.3.3",

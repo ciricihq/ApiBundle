@@ -55,6 +55,14 @@ class UserController extends ResettingController
             $user->setConfirmationToken($tokenGenerator->generateToken());
         }
 
+        if ('undefined' == $request->getLocale()) {
+            if ($locale = $request->getSession()->get('_locale')) {
+                $request->setLocale($locale);
+            } else {
+                $request->setLocale($request->getPreferredLanguage());
+            }
+        }
+
         $this->container->get('fos_user.mailer')->sendResettingEmailMessage($user);
         $user->setPasswordRequestedAt(new \DateTime());
         $this->container->get('fos_user.user_manager')->updateUser($user);
